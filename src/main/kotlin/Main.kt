@@ -2,10 +2,18 @@ import java.math.RoundingMode
 
 fun main() {
 
+    var menuLoop = true
     var menuSelect:Int
     var menuOne:RoomReserve
+    var reserveList = arrayListOf<ArrayList<String>>()
 
-    println("""
+
+
+    println(reserveList)
+
+    while (menuLoop) {
+        println(
+            """
      ========== 호텔예약 프로그램 입니다 ==========
                       
         (1) 방예약
@@ -16,16 +24,25 @@ fun main() {
         (6) 예약 변경/취소
       
       =========================================
-    """.trimMargin())
+    """.trimMargin()
+        )
 
-    menuSelect = readLine()!!.toInt()
+        menuSelect = readLine()!!.toInt()
 
-    when (menuSelect) {
-        1 -> {
-            menuOne = RoomReserve()
-            menuOne.reservation()
+        when (menuSelect) {
+            1 -> {
+                menuOne = RoomReserve()
+                reserveList += menuOne.reserveList
+            }
+
+            2 -> println(reserveList)
+
+            4 -> menuLoop = false
+
         }
     }
 
+    println("시스템을 종료합니다.")
 
 }
+
