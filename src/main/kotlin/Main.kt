@@ -1,15 +1,15 @@
-import java.math.RoundingMode
-
 fun main() {
 
+    val reserveData = ReserveData() // 데이터를 저장하는 클래스 인스턴스
     var menuLoop = true
     var menuSelect:Int
     var menuOne:RoomReserve
-    var reserveList = arrayListOf<ArrayList<String>>()
 
+//    reserveData.saveReserve(arrayListOf("1", "232", "2023-12-10", "2023-12-20"))
+//    reserveData.saveReserve(arrayListOf("2", "232", "2023-11-30", "2023-12-01"))
+//    reserveData.saveReserve(arrayListOf("3", "232", "2023-12-25", "2023-12-28"))
+//    reserveData.saveReserve(arrayListOf("4", "232", "2023-12-10", "2023-12-15"))
 
-
-    println(reserveList)
 
     while (menuLoop) {
         println(
@@ -32,10 +32,36 @@ fun main() {
         when (menuSelect) {
             1 -> {
                 menuOne = RoomReserve()
-                reserveList += menuOne.reserveList
+                if (menuOne.tempList.isNotEmpty()) reserveData.saveReserve(menuOne.tempList)
             }
 
-            2 -> println(reserveList)
+            2 -> if (reserveData.reserveList.isEmpty()) {
+                println("")
+                println("예약내역이 없습니다.")
+                println("")
+                println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                readln()
+            } else {
+                println("")
+                reserveData.reserveList.forEach{ println(it) }
+                println("")
+                println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                readln()
+            }
+
+            3 -> if (reserveData.reserveList.isEmpty()) {
+                println("")
+                println("예약내역이 없습니다.")
+                println("")
+                println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                readln()
+            } else {
+                println("")
+                reserveData.sortCheck().forEach{ println(it) }
+                println("")
+                println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                readln()
+            }
 
             4 -> menuLoop = false
 
