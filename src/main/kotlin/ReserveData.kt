@@ -1,22 +1,14 @@
 class ReserveData {
-    var reserveList = arrayListOf<ArrayList<String>>()
+    var reserveList = mutableListOf<List<String>>()
 
-
-    fun saveReserve (list: ArrayList<String>) {
-
-        var saveData = list
-
-        saveData[0] = "예약자: ${saveData[0]}"
-        saveData[1] = "방번호: ${saveData[1]}"
-        saveData[2] = "체크인: ${saveData[2]}"
-        saveData[3] = "체크아웃: ${saveData[3]}"
-
-        reserveList += saveData
+   fun reserveCheck () {
+        reserveList.forEach{ println("예약자 : ${it[0]}   방번호 : ${it[1]}   체크인 : ${it[2]}   체크아웃 : ${it[3]}") }
     }
-    fun sortCheck (): List<ArrayList<String>> {
 
-        return reserveList.sortedWith(compareBy<ArrayList<String>> {it[2]}.thenBy { it[3] })
-
+    fun sortCheck () {
+        reserveList.sortedWith(compareBy<List<String>> {it[2]}.thenBy { it[3] }).toMutableList().forEach{
+            println("예약자 : ${it[0]}   방번호 : ${it[1]}   체크인 : ${it[2]}   체크아웃 : ${it[3]}")
+        }
     }
 
 }

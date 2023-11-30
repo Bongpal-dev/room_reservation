@@ -5,10 +5,10 @@ fun main() {
     var menuSelect:Int
     var menuOne:RoomReserve
 
-//    reserveData.saveReserve(arrayListOf("1", "232", "2023-12-10", "2023-12-20"))
-//    reserveData.saveReserve(arrayListOf("2", "232", "2023-11-30", "2023-12-01"))
-//    reserveData.saveReserve(arrayListOf("3", "232", "2023-12-25", "2023-12-28"))
-//    reserveData.saveReserve(arrayListOf("4", "232", "2023-12-10", "2023-12-15"))
+    reserveData.reserveList += (arrayListOf("1", "232", "2023-12-10", "2023-12-20"))
+    reserveData.reserveList += (arrayListOf("2", "232", "2023-11-30", "2023-12-01"))
+    reserveData.reserveList += (arrayListOf("3", "232", "2023-12-25", "2023-12-28"))
+    reserveData.reserveList += (arrayListOf("4", "232", "2023-12-10", "2023-12-15"))
 
 
     while (menuLoop) {
@@ -32,7 +32,7 @@ fun main() {
         when (menuSelect) {
             1 -> {
                 menuOne = RoomReserve()
-                if (menuOne.tempList.isNotEmpty()) reserveData.saveReserve(menuOne.tempList)
+                if (menuOne.tempList.isNotEmpty()) reserveData.reserveList += menuOne.tempList
             }
 
             2 -> if (reserveData.reserveList.isEmpty()) {
@@ -43,7 +43,7 @@ fun main() {
                 readln()
             } else {
                 println("")
-                reserveData.reserveList.forEach{ println(it) }
+                reserveData.reserveCheck()
                 println("")
                 println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
                 readln()
@@ -57,7 +57,7 @@ fun main() {
                 readln()
             } else {
                 println("")
-                reserveData.sortCheck().forEach{ println(it) }
+                reserveData.sortCheck()
                 println("")
                 println("엔터키를 누르면 메인 화면으로 돌아갑니다.")
                 readln()

@@ -1,3 +1,4 @@
+import com.sun.source.tree.WhileLoopTree
 import java.lang.NumberFormatException
 import java.time.DateTimeException
 import java.time.LocalDate
@@ -9,10 +10,10 @@ class RoomReserve {
     var today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")).toInt()
 
     var name: String
-    var roomNum: Int
+    var roomNum: Int = 0
     var checkIn: LocalDate = LocalDate.now()
     var checkOut: LocalDate = LocalDate.now()
-    var tempList = arrayListOf<String>()
+    var tempList = listOf<String>()
 
 
     init {
@@ -22,15 +23,30 @@ class RoomReserve {
         name = readln()
 
         // 방번호 입력
-        println("예약할 방번호를 입력해주세요")
-        roomNum = readln().toInt()
+        var roomNumComplete = true
+        var tempRoomNum = 0
 
-        while (roomNum !in 100 .. 999) {
-            println(red+"올바르지 않은 방번호 입니다. 방번호는 100~999 영역 이내입니다."+reset)
-            println("")
+        roomNumLoop@ while (roomNumComplete) {
             println("예약할 방번호를 입력해주세요")
-            roomNum = readln().toInt()
+
+            try {
+                tempRoomNum = readln().toInt()
+            } catch (e: NumberFormatException) {
+                println(red + "방번호를 올바르게 입력해주세요." + reset)
+                println("")
+                continue@roomNumLoop
+            }
+
+            if (tempRoomNum !in 100 .. 999) {
+                println(red+"올바르지 않은 방번호 입니다. 방번호는 100~999 영역 이내입니다."+reset)
+                println("")
+                continue@roomNumLoop
+            }
+            roomNum = tempRoomNum
+            roomNumComplete = false
         }
+
+
 
         // 체크인 날짜 입력
         var chkInComplete = true
@@ -61,7 +77,7 @@ class RoomReserve {
             }
 
             // 선택한 날짜가 오늘보다 지난 날짜인지 확인
-            while (chkInDate.toInt() < today) {
+            if (chkInDate.toInt() < today) {
                 println(red+"체크인은 지난날짜를 선택할 수 없습니다."+reset)
                 println("")
                 continue@chcekInLoop
@@ -95,7 +111,8 @@ class RoomReserve {
                 println("")
                 continue@checkOutLoop
             }
-            while (chkOutDate.toInt() <= chkInDate.toInt()) {
+
+            if (chkOutDate.toInt() <= chkInDate.toInt()) {
                 println(red+"체크인 날짜보다 이전이거나 같을 수는 없습니다."+reset)
                 println("")
                 continue@checkOutLoop
