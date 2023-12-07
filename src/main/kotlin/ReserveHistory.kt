@@ -42,7 +42,7 @@ class ReserveHistory {
         println("예약을 변경할 사용자 이름을 입력하세요")
         beforeName = readln()
 
-        reserveList.forEach { if (it.name == beforeName) noChangeName = false else true }
+        reserveList.forEach { if (it.name == beforeName) noChangeName = false }
 
         if (noChangeName) {
             System.err.println("예약된 사용자를 찾을수 없습니다.")
@@ -70,18 +70,18 @@ class ReserveHistory {
                     System.err.println("숫자만 입력해주세요")
                     continue
                 }
-                else if (select.toIntOrNull() in 0 .. reserveStatus.lastIndex) {
+                else if (select.toIntOrNull()!! - 1 in 0 .. reserveStatus.lastIndex) {
 
                     while (true) {
-                        var cancel: Int?
 
                         println("해당 예약을 어떻게 하시겠어요?")
                         println("[1] 변경   [2] 취소\n이외의 숫자를 입력하면 메뉴로 돌아갑니다.")
 
-                        cancel = readln().toIntOrNull()
+                        var cancel = readln().toIntOrNull()
 
                         if (cancel == null) {
                             System.err.println("숫자만 입력해주세요")
+                            continue
                         }
 
                             when (cancel) {
@@ -90,7 +90,39 @@ class ReserveHistory {
                                 }
 
                                 2 -> {
+                                    println("""
+                                        [취소 유의사항]
+                            체크인 3일 이전 취소 예약금 환불 불가
+                            체크인 5일 이전 취소 예약금의 30% 환불
+                            체크인 7일 이전 취소 예약금의 50% 환불
+                            체크인 14일 이전 취소 예약금의 80% 환불
+                            체크인 30일 이전 취소 예약금의 100% 환불
+                                        """.trimIndent())
 
+                                    println("취소하시겠습니까?")
+                                    println("[1] 예    [2] 아니오")
+                                   while (true) {
+                                       var cancelSelect = readln().toIntOrNull()
+                                       if (cancelSelect == null) {
+                                           System.err.println("숫자만 입력해주세요.")
+                                           continue
+                                       }
+                                       when (cancelSelect) {
+                                           1 -> {
+                                               reserveList.remove(reserveStatus[select.toInt() - 1])
+                                               println("예약이 취소되었습니다.")
+                                               println("\n엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                                               readln()
+                                               break@mainLoop
+                                           }
+
+                                           2 -> {
+                                               println("\n엔터키를 누르면 메인 화면으로 돌아갑니다.")
+                                               readln()
+                                               break@mainLoop
+                                           }
+                                       }
+                                   }
                                 }
 
                                 else -> break@mainLoop

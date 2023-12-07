@@ -52,13 +52,12 @@ class RoomReserve (val data: MutableList<ReservationData>) {
             roomNumComplete = false
         }
 
+        val roomUse = data.filter{ it.roomNumber == roomNum}.sortedBy { it.checkInDate }.toMutableList()
 
         // 체크인 날짜 입력
         var chkInComplete = true
         var chkInDate = ""
-        val roomUse = data.filter{ it.roomNumber == roomNum}.sortedBy { it.checkInDate }.toMutableList()
 
-        println(roomUse)
 
         // 체크인 날짜가 날짜형식에 맞지 않을경우 반복
         checkInLoop@ while (chkInComplete) {
@@ -68,11 +67,7 @@ class RoomReserve (val data: MutableList<ReservationData>) {
 
             // 입력한 날짜가 날짜형식에 맞는지, 있는 날짜인지 체크
             try {
-                checkIn = LocalDate.of(
-                    chkInDate.substring(0, 4).toInt(),
-                    chkInDate.substring(4, 6).toInt(),
-                    chkInDate.substring(6, 8).toInt(),
-                )
+                checkIn = LocalDate.from(dateFormat.parse(chkInDate))
             } catch (e: DateTimeException) {
                 System.err.println("날짜를 올바르게 입력해주세요.\n")
                 continue@checkInLoop
@@ -91,11 +86,14 @@ class RoomReserve (val data: MutableList<ReservationData>) {
             }
 
             // 선택한 날짜가 예약내역의 날짜와 겹치는지 확인
+            println(roomUse)
+
             for (i in roomUse) {
                 if (checkIn.isAfter(i.checkInDate.minusDays(1)) && checkIn.isBefore(i.checkOutDate.plusDays(1))){
                     System.err.println("해당 날짜에 예약내역이 존재합니다.\n")
                     continue@checkInLoop
                 }
+
             }
 
             chkInComplete = false
@@ -111,11 +109,7 @@ class RoomReserve (val data: MutableList<ReservationData>) {
             chkOutDate = readln()
 
             try {
-                checkOut = LocalDate.of(
-                    chkOutDate.substring(0, 4).toInt(),
-                    chkOutDate.substring(4, 6).toInt(),
-                    chkOutDate.substring(6, 8).toInt(),
-                )
+                checkOut = LocalDate.from(dateFormat.parse(chkOutDate))
             } catch (e: DateTimeException) {
                 System.err.println("날짜를 올바르게 입력해주세요.\n")
                 continue@checkOutLoop

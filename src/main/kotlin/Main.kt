@@ -5,7 +5,7 @@ val customerList = CustomerList()
 
 fun main() {
 
-    var menuSelect: Int?
+    var menuSelector: Int
     var reserve:RoomReserve
 
     while (true) {
@@ -25,14 +25,16 @@ fun main() {
             """.trimMargin()
         )
 
-        menuSelect = readln().toIntOrNull()
-
-        if (menuSelect == null) {
+        // 메뉴 선택시 숫자 이외의 값이 입력되면 NumberFormatException이 발생 -> 해당 예외를 catch하여 err 메시지를 출력하고 다시 메뉴를 선택하도록 continue
+        try {
+            menuSelector = readln().toInt()
+        } catch (e: NumberFormatException) {
             System.err.println("\n\n숫자만 입력해 주세요\n")
             continue
         }
 
-        when (menuSelect) {
+        // menu 선택시 작동할 선택지, 메뉴 이외의 숫자를 선택하면 초기로 되돌림
+        when (menuSelector) {
             1 -> {
                 reserve = RoomReserve(reservationHistory.reserveList)
                 if (reserve.tempList != null) {
